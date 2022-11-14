@@ -2,9 +2,10 @@
  * 문자열의 마지막(끝) 문자의 종성 포함 여부 확인
  * @param value - Target String
  * @returns 종성 포함 여부
+ *  0이상일 경우는 받침이 있는경우이며 그렇지 않은경우는 받침이 없는 경우
  */
 function hasCoda(value) {
-    return ((value.charCodeAt(value.length - 1) - 0xAC00) % 28) > 0;
+    return ((value.charCodeAt(value.length - 1) - 0xAC00) % 28) > 0; 
 }
 
 
@@ -26,5 +27,5 @@ function isValid(target, fieldName, focusTarget) {
 
     target.value = '';
     ( !focusTarget ? target : focusTarget).focus();
-    throw new Error(`"${target.id}" is required...`)
+    throw new Error(`"${target.id}" is required...`) // 브라우저 error 표시
 }

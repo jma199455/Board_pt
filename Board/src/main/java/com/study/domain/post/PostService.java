@@ -70,8 +70,8 @@ public class PostService {
             try {
                 // 문자열을 Date 객체로 파싱
                 Date date = formater.parse(postResponse.getCreatedDate());
-                System.out.println(date);
-                System.out.println(formater.format(date));
+                //System.out.println(date);
+                //System.out.println(formater.format(date));
                 postResponse.setCreatedDate(formater.format(date));
                 //postResponse.setCreatedDate(formater.format(date));
             } catch (ParseException e) {

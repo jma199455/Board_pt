@@ -36,10 +36,14 @@ public class PostMapperTest {
     @Test
     void findById() {
         PostResponse post = postMapper.findById(13);
+
+        ObjectMapper mapper = new ObjectMapper();
+        
         try {
             String postJson = new ObjectMapper().registerModule(new JavaTimeModule()).writeValueAsString(post);
             System.out.println(postJson);
-
+            //String result = mapper.writeValueAsString(post);
+            //System.out.println("result ==> " + result); 출력값 같음 
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }

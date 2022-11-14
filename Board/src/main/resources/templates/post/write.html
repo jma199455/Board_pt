@@ -57,16 +57,13 @@
     </th:block>
     
     <th:block layout:fragment="script">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script th:inline="javascript">
         /*<![CDATA[*/
             
 
-
             window.onload = () => {
                 initCreatedDate();
             }
-
 
             // 등록일 초기화
             function initCreatedDate() {
