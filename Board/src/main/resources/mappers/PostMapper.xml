@@ -45,6 +45,12 @@
             id = #{value}
     </select>
 
+    <select id="updateCnt" parameterType="int">
+        update tb_post
+        set view_cnt = view_cnt+1
+        where id = #{id}
+    </select>
+
 
     <!-- 게시글 수정 -->
     <update id="update" parameterType="com.study.domain.post.PostRequest">
@@ -62,6 +68,14 @@
 
     <!-- 게시글 삭제 -->
     <delete id="deleteById" parameterType="int">
+        UPDATE tb_post
+        SET
+            delete_yn = 1
+        WHERE
+            id = #{id}
+    </delete>
+
+    <delete id="delete" parameterType="int">
         UPDATE tb_post
         SET
             delete_yn = 1

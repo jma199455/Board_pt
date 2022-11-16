@@ -3,6 +3,7 @@ package com.study.domain.post;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PostMapper {
@@ -11,37 +12,43 @@ public interface PostMapper {
      * 게시글 저장
      * @param params - 게시글 정보
      */
-    void save(PostRequest params);
+    public void save(PostRequest params);
 
     /**
      * 게시글 상세정보 조회
      * @param id - PK
      * @return 게시글 상세정보
      */
-    PostResponse findById(int id);
+    public PostResponse findById(int id);
     
     /**
      * 게시글 수정
      * @param params - 게시글 정보
      */
-    void update(PostRequest params);
+    public void update(PostRequest params);
 
     /**
      * 게시글 삭제
      * @param id - PK
      */
-    void deleteById(int id);
-
+    public int deleteById(int id);
+                        
     /**
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-    List<PostResponse> findAll();
+    public List<PostResponse> findAll();
 
     /**
      * 게시글 수 카운팅
      * @return 게시글 수
      */
-    int count();
+    public int count();
     
+    // 리스트 선택삭제 
+    public int delete(int id);
+
+    // 조회수 업데이트
+    public Integer updateCnt(int id);
+
 }

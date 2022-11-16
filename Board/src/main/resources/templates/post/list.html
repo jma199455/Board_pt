@@ -44,8 +44,8 @@
         </thead>
         <tbody>
           <tr th:if="${not #lists.isEmpty( posts )}" th:each="row, status : ${posts}">
-            <td><input type="checkbox" name="chk" th:value="${row.id}"/></td>
-            <td th:text="${row.noticeYn == false ? (status.size - status.index) : '공지'}"></td>
+            <td><input type="checkbox" id="chk" name="chk" th:value="${row.id}"/></td>
+            <td id="asd" th:text="${row.noticeYn == false ? (status.size - status.index) : '공지'}"></td>
             <td class="tl"><a th:href="@{/post/view.do( id=${row.id} )}" th:text="${row.title}"></a></td>
             <td th:text="${row.createdDate}"></td>
             <!-- <td th:text="${#temporals.format(list.createdDatetime, 'yyyy-MM-dd HH:mm:ss')}"></td> --> <!-- LocalDateTime 타입인 경우 -->
@@ -66,7 +66,7 @@
       <!--/* 버튼 */-->
       <p class="btn_set tr">
         <a th:href="@{/post/write.do}" class="btns btn_st3 btn_mid">글작성</a>
-        <a href="#" id="btnDel" class="btns btn_st3 btn_mid" th:style="${'background:red'}">선택삭제</a>
+        <a id="btnDel" class="btns btn_st3 btn_mid" th:style="${'background:red'}">선택삭제</a>
       </p>
     </section>
   </div> <!--/* .content */-->
@@ -78,46 +78,63 @@
     /*<![CDATA[*/
     var tempList = [];
     
-
         $(function(){
-            
-            //var temp = [[${posts}]];
-            //console.log(temp);
 
             $('#btnDel').click(() => {
               
-              alert('확인');
-              
               $('input[name=chk]:checked').each(function(){
                 if($(this).is(":checked")==true){
-    	          console.log($(this).val());
-                tempList.push($(this).val());
+                  tempList.push($(this).val());
                 }
               });
 
-              var url = '/post/delete.do';
+              var url = '/post/deleteChk.do';
+              var data = { paramSeqs : tempList };
+
               var callback = function(data){
                 if(data >= 1) {
                   alert('삭제완료');
-                  location.href = '/post/list.do'; // 수정
                 } else {
                   alert('삭제실패');
-                  location.href = '/post/list.do'; // 수정
                 }
-
-
-              };
-
-
+                location.href = '/post/list.do'; 
+              };  
+              
+              ChkDeleteAjax(url, $.param(data,true), callback);
 
             });
 
         });
 
     /*]]>*/
-    function ChkDeleteAjax(url, datas, callback){
-      alert('ajax처리');
+    
+    // list 선택삭제 Ajax 처리 
+    function ChkDeleteAjax(url, data, callback = false){
+      
+      $.ajax({
+        type: 'post',
+        data: data,
+        //contentType: "application/json; charset=utf-8",
+        url: url,
+        dataType: "json",
+        success: function (data) {
+          if(callback) {
+            console.log(data);
+            callback(data);
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert("ERROR : " + textStatus + " : " + errorThrown);
+        }
+      });      
     }
+
+
+
+
+
+
+
 
     </script>
 </th:block>

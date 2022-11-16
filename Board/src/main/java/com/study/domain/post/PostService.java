@@ -32,8 +32,21 @@ public class PostService {
      * @param id - PK
      * @return 게시글 상세정보
      */
-    public PostResponse findPostById(final int id) {
-        return postMapper.findById(id);
+    public PostResponse findPostById(int id) {
+        postMapper.updateCnt(id);
+
+        PostResponse result = postMapper.findById(id);
+        SimpleDateFormat formater = new SimpleDateFormat("yyyy-mm-dd HH:mm");
+        
+        try {
+            Date date = formater.parse(result.getCreatedDate());
+            result.setCreatedDate(formater.format(date));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     /**
@@ -52,9 +65,10 @@ public class PostService {
      * @param id - PK
      * @return PK
      */
-    public int deletePost(final int id) {
-        postMapper.deleteById(id);
-        return id;
+    public int deletePost(int id) {
+        int result = 0;
+        result = postMapper.deleteById(id);
+        return result;
     }
 
     /**
@@ -80,6 +94,17 @@ public class PostService {
         }
 
         return posts;
+    }
+
+    public int delete(int[] ids) {
+
+        int result = 0;
+        for (int id : ids) {
+            System.out.println(id);
+            result += postMapper.delete(id);
+        }
+        return result;
+
     }
 
 }
