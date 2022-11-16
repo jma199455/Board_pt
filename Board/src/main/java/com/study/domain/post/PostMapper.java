@@ -3,7 +3,8 @@ package com.study.domain.post;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+
+import com.study.common.dto.SearchDto;
 
 @Mapper
 public interface PostMapper {
@@ -37,13 +38,13 @@ public interface PostMapper {
      * 게시글 리스트 조회
      * @return 게시글 리스트
      */
-    public List<PostResponse> findAll();
+    public List<PostResponse> findAll(SearchDto params);
 
     /**
      * 게시글 수 카운팅
      * @return 게시글 수
      */
-    public int count();
+    public int count(SearchDto params);
     
     // 리스트 선택삭제 
     public int delete(int id);

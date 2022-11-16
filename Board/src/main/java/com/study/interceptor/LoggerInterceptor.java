@@ -18,7 +18,7 @@ public class LoggerInterceptor implements HandlerInterceptor{
         log.debug("Request URI ===> " + request.getRequestURI());
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
-
+    
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         log.debug("==================== END ======================");
