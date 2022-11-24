@@ -3,6 +3,28 @@
 
 <mapper namespace="com.study.domain.post.PostMapper">
 
+    <!-- 게시글 검색 -->
+    <sql id="search">
+        <!-- 검색 키워드가 있을 때 -->
+        <if test="keyword != null and keyword != ''">
+            <!-- 검색 유형이 있을 때 -->
+            <if test="searchType != null and searchType != ''">
+                <choose>
+                    <when test="'title'.equals( searchType )">
+                        AND title LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="'writer'.equals( searchType )">
+                        AND writer LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                </choose>
+            </if>
+        </if>
+        <if test="keyword == null and keyword == ''">
+                AND title LIKE CONCAT('%', #{keyword}, '%')
+                AND writer LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+    </sql>
+
     <!-- tb_post 테이블 전체 컬럼 -->
     <sql id="postColumns">
           id
@@ -52,6 +74,7 @@
     </select>
 
 
+
     <!-- 게시글 수정 -->
     <update id="update" parameterType="com.study.domain.post.PostRequest">
         UPDATE tb_post
@@ -66,13 +89,15 @@
     </update>
 
 
+
+
     <!-- 게시글 삭제 -->
-    <delete id="deleteById" parameterType="int">
+    <delete id="deleteById" parameterType="map">
         UPDATE tb_post
         SET
             delete_yn = 1
         WHERE
-            id = #{id}
+            id = #{map.id}
     </delete>
 
     <delete id="delete" parameterType="int">
@@ -102,8 +127,9 @@
             , modified_date
             FROM
                 tb_post
-            WHERE
-                delete_yn = 0
+            WHERE 1=1
+            AND delete_yn = 0
+            <include refid="search"/>
             ) a
             order by a.rm desc
             LIMIT #{pagination.limitStart}, #{recordSize}
@@ -117,6 +143,7 @@
             tb_post
         WHERE
             delete_yn = 0
+        <include refid="search" />
     </select>
 
 </mapper>

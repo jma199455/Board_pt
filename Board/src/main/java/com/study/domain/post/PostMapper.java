@@ -1,8 +1,10 @@
 package com.study.domain.post;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.study.common.dto.SearchDto;
 
@@ -32,7 +34,7 @@ public interface PostMapper {
      * 게시글 삭제
      * @param id - PK
      */
-    public int deleteById(int id);
+    public int deleteById(@Param("map") Map<String,Object> map);
                         
     /**
      * 게시글 리스트 조회

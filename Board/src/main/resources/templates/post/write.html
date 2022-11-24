@@ -49,7 +49,8 @@
                 </form>
                 <p class="btn_set">
                     <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">저장</button>
-                    <a th:href="@{/post/list.do}" class="btns btn_bdr3 btn_mid">뒤로</a>
+                    <!-- <a th:href="@{/post/list.do}" class="btns btn_bdr3 btn_mid">리스트 목록으로</a> -->
+                    <a href="javascript:void(0);" onclick="goListPage();" class="btns btn_bdr3 btn_mid">리스트 목록으로</a>
                 </p>
             </section>
         </div> <!--/* .content */-->
@@ -77,14 +78,53 @@
                 const fieldNames = ['제목', '이름', '내용'];
 
                 for (let i = 0, len = fields.length; i < len; i++) {
-                    isValid(fields[i], fieldNames[i]);
+                    isValid(fields[i], fieldNames[i]); // 공통 함수
                 }
 
                 document.getElementById('saveBtn').disabled = true;
                 form.noticeYn.value = form.isNotice.checked;
-                form.action = [[ ${post == null} ]] ? '/post/save.do' : '/post/update.do';
-                form.submit();
+                
+
+                // 수정일 경우 ajax 호출로 처리해보기
+                var data = [[ ${post == null} ]];
+                if(!data) {
+
+                    var queryString = new URLSearchParams(location.search);
+                    var idCheck = queryString.get('id');
+
+                    var url = '/post/update.do';
+                    var data = {
+                            id : idCheck,
+                            title : form.title.value,
+                            writer : form.writer.value,
+                            content : form.writer.value,
+                            noticeYn : form.noticeYn.value
+                        };
+                    //console.log(data);
+                    
+                    var callback = function(data){
+                        if(data >= 1) {
+                            alert('수정이 완료되었습니다.');
+                        } else {
+                            alert('수정이 실패하였습니다.');
+                        }
+                        var queryString = new URLSearchParams(location.search);
+                        queryString.delete('id');
+                        var listUrl = '/post/list.do' + '?' + queryString.toString();
+                        location.href = listUrl; 
+                    };
+                    
+                    restAjax(url, data, callback);
+                    
+                } else {
+                    form.action = '/post/save.do';
+                    form.submit();
+                }
+
+                //form.action = [[ ${post == null} ]] ? '/post/save.do' : '/post/update.do';  // 저장버튼 클릭 시 list.html 페이징 적용 전 코드
+                //form.submit();    // 저장버튼 클릭 시 list.html 페이징 적용 전 코드
             }
+
 
             function renderPostInfo() {
 
@@ -104,6 +144,35 @@
                     form[field].value = post[field];
                 });
             }
+
+            function goListPage() {
+                const queryString = new URLSearchParams(location.search);
+                queryString.delete('id');
+                location.href = '/post/list.do' + '?' + queryString.toString();
+            }
+            
+
+            // 수정일 경우 ajax 호출
+            function restAjax(url, data, callback = false) {
+                $.ajax({
+                    type: 'post',
+                    data: JSON.stringify(data),
+                    contentType: "application/json; charset=utf-8",
+                    url: url,
+                    dataType: "json",
+                    success: function (data) {
+                        if(callback) {
+                        callback(data);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        alert("ERROR : " + textStatus + " : " + errorThrown);
+                    }
+                });      
+            }
+
+
+
 
         /*]]>*/
         </script>

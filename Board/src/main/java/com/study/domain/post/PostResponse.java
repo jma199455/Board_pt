@@ -19,6 +19,8 @@ public class PostResponse {
 	private String createdDate;     // 생성일시
     private String modifiedDate;    // 최종 수정일시
 
+    private int rm; // 번호순번
+
 	//private LocalDateTime createdDate;     // 생성일시
     //private LocalDateTime modifiedDate;    // 최종 수정일시
 
