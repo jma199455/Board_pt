@@ -2,6 +2,7 @@ package com.study.domain.post;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +23,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PostController {
 
+    @Autowired
     private final PostService postService;
 
+    @Autowired
+	private CommentService commentService;  // 확인 후 필요없으면 제거
+    
 
     // 사용자에게 메시지를 전달하고, 페이지를 리다이렉트 한다.
     private String showMessageAndRedirect(final MessageDto params, Model model) {
@@ -73,9 +78,19 @@ public class PostController {
 
     // 게시글 상세 페이지
     @GetMapping("/post/view.do")
-    public String openPostView(@RequestParam final int id, Model model) {
+    public String openPostView(@ModelAttribute("params") CommentDto params, @RequestParam final int id, Model model) {
+
+        //System.out.println("view 파라미터 확인 ========> " + params); // Get -> queryString 파라미터 확인 
+        
+        // 페이징 여기다가?... 아닌듯 지우기!
+        /*  
+        //CommentDto pageDto = commentService.getcommentlListPage(params);
+        //model.addAttribute("pagination", pageDto);
+        */
+
         PostResponse post = postService.findPostById(id);
-        model.addAttribute ("post", post);
+        model.addAttribute ("post", post); // 게시판 상세 내용
+
         return "post/view";
     } 
 

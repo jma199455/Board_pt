@@ -11,4 +11,5 @@ public interface CommentService {
 
 	public List<CommentDto> getCommentList(CommentDto params);
 
+	public CommentDto getcommentlListPage(CommentDto params);
 }

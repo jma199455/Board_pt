@@ -1,16 +1,13 @@
 package com.study.paging;
 
-import javax.xml.stream.events.Comment;
-
-import com.study.common.dto.SearchDto;
 import com.study.domain.post.CommentDto;
 
 import lombok.Data;
 import lombok.Getter;
 
-@Getter
 @Data
-public class Pagination {
+@Getter
+public class PaginationComment {
 
     private int totalRecordCount;   // 전체 데이터 수
     private int totalPageCount;     // 전체 페이지 수
@@ -20,15 +17,14 @@ public class Pagination {
     private boolean existPrevPage;  // 이전 페이지 존재 여부
     private boolean existNextPage;  // 다음 페이지 존재 여부
 
-
-    public Pagination(int totalRecordCount, SearchDto params) {
+    public PaginationComment(int totalRecordCount, CommentDto params) {
         if (totalRecordCount > 0) {
             this.totalRecordCount = totalRecordCount;
             this.calculation(params);
         }
     }
 
-    private void calculation(SearchDto params) {
+    private void calculation(CommentDto params) {
                                      
         // System.out.println(params);  // SearchDto(page=1, recordSize=10, pageSize=10, keyword=null, searchType=null, pagination=null)
 
@@ -53,9 +49,8 @@ public class Pagination {
 
         // LIMIT 시작 위치 계산
         limitStart = (params.getPage() - 1) * params.getRecordSize(); // 11 21 31 41 
-    
+        
         // 이전 페이지 존재 여부 확인
-
         // existPrevPage = startPage != 1; // 기존 코드 : page1일 때는 이전 페이지가 존재하지 않음
         existPrevPage = startPage > 0;
 
@@ -64,7 +59,6 @@ public class Pagination {
         existNextPage = endPage > 0;
                             
     }
-
 
 
 }

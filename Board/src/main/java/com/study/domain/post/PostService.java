@@ -94,6 +94,7 @@ public class PostService {
         Pagination pagination = new Pagination(count, params);
         params.setPagination(pagination);
         
+        // System.out.println("여기는 Pagination 확인" + params); 
         List<PostResponse> list = postMapper.findAll(params);
 
         // String 타입 createDate 따로 처리해줄 때 사용 (리스트 등록날짜 화면에 사용) 

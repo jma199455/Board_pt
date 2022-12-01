@@ -72,6 +72,8 @@
 		ORDER BY
 			idx DESC,
 			insert_time DESC
+		LIMIT #{pagination.limitStart}, #{recordSize}	
+
 	</select>
 
 	<select id="selectCommentTotalCount" parameterType="com.study.domain.post.CommentDto" resultType="int">

@@ -7,21 +7,24 @@
     <sql id="search">
         <!-- 검색 키워드가 있을 때 -->
         <if test="keyword != null and keyword != ''">
-            <!-- 검색 유형이 있을 때 -->
-            <if test="searchType != null and searchType != ''">
-                <choose>
-                    <when test="'title'.equals( searchType )">
+            <choose>
+                <!-- 검색 유형이 있을 때 -->
+                <when test="searchType != null and searchType != ''">
+                    <choose>
+                        <when test="'title'.equals( searchType )">
+                            AND title LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                        <when test="'writer'.equals( searchType )">
+                            AND writer LIKE CONCAT('%', #{keyword}, '%')
+                        </when>
+                    </choose>
+                </when>
+                <!-- 전체 검색일 때 -->
+                <otherwise>
                         AND title LIKE CONCAT('%', #{keyword}, '%')
-                    </when>
-                    <when test="'writer'.equals( searchType )">
                         AND writer LIKE CONCAT('%', #{keyword}, '%')
-                    </when>
-                </choose>
-            </if>
-        </if>
-        <if test="keyword == null and keyword == ''">
-                AND title LIKE CONCAT('%', #{keyword}, '%')
-                AND writer LIKE CONCAT('%', #{keyword}, '%')
+                </otherwise>
+            </choose>
         </if>
     </sql>
 
@@ -114,21 +117,21 @@
             select a.*
             from
             (
-            select 
-            row_number() over(order by notice_yn asc, created_date asc) as rm
-            , id
-            , title
-            , content
-            , writer
-            , view_cnt
-            , notice_yn
-            , delete_yn
-            , created_date
-            , modified_date
-            FROM
-                tb_post
-            WHERE 1=1
-            AND delete_yn = 0
+                select 
+                row_number() over(order by notice_yn asc, created_date asc) as rm
+                , id
+                , title
+                , content
+                , writer
+                , view_cnt
+                , notice_yn
+                , delete_yn
+                , created_date
+                , modified_date
+                FROM
+                    tb_post
+                WHERE 1=1
+                AND delete_yn = 0
             <include refid="search"/>
             ) a
             order by a.rm desc
