@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.study.common.dto.SearchDto;
 
@@ -15,7 +16,11 @@ public interface PostMapper {
      * 게시글 저장
      * @param params - 게시글 정보
      */
-    public void save(PostRequest params);
+    public int save(PostRequest params);
+
+
+    // public int save(PostRequest params, MultipartFile[] files);
+
 
     /**
      * 게시글 상세정보 조회
@@ -28,7 +33,7 @@ public interface PostMapper {
      * 게시글 수정
      * @param params - 게시글 정보
      */
-    public void update(PostRequest params);
+    public int update(PostRequest params);
 
     /**
      * 게시글 삭제

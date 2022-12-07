@@ -75,8 +75,6 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public CommentDto getcommentlListPage(CommentDto params) {
 
-		// System.out.println("CommentDto params ===============================================> " + params);
-		
 		int commentTotalCount = commentMapper.selectCommentTotalCount(params);
 
 		CommentDto dto = new CommentDto();

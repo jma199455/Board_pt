@@ -1,17 +1,20 @@
 package com.study.domain.post;
 
+import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.study.common.dto.MessageDto;
 import com.study.common.dto.SearchDto;
@@ -25,10 +28,6 @@ public class PostController {
 
     @Autowired
     private final PostService postService;
-
-    @Autowired
-	private CommentService commentService;  // 확인 후 필요없으면 제거
-    
 
     // 사용자에게 메시지를 전달하고, 페이지를 리다이렉트 한다.
     private String showMessageAndRedirect(final MessageDto params, Model model) {
@@ -45,14 +44,35 @@ public class PostController {
         if (id != null) {
             PostResponse post = postService.findPostById(id);
             model.addAttribute("post", post);
+
+            List<AttachDto> fileList = postService.getAttachFileList(id);
+             System.out.println("fileList ===================> " + fileList);
+            model.addAttribute("fileList", fileList);
+        
         }
+
         return "post/write";
     }
 
     // 신규 게시글 생성
     @PostMapping("/post/save.do")
-    public String savePost(final PostRequest params, Model model) {
-        postService.savePost(params);
+    //public String savePost(final PostRequest params, Model model, @RequestParam("files") MultipartFile[] files) { 
+    public String savePost(final PostRequest params, Model model, MultipartFile[] files) { // @RequestPart(value = "files", required = false) 사용안해도 이미지 등록이됨 이유 : 이름이 같으면 자동 매핑 처리
+        System.out.println("filesfilesfilesfilesfilesfiles=========> " + files);
+
+        //System.out.println(file1);
+        //System.out.println(file2);
+
+        /*  MultipartHttpServletRequest reuqest로 파일 여러개 받았을 때
+        MultipartFile file = null;
+        Iterator<String> iterator = request.getFileNames();
+        if (iterator.hasNext()) {
+            file = request.getFile(iterator.next());
+        }    
+        System.out.println(file);
+        */
+
+        postService.savePost(params, files);
         MessageDto message = new MessageDto("게시글 생성이 완료되었습니다.", "/post/list.do", RequestMethod.GET, null);
         return showMessageAndRedirect(message, model);
     }
@@ -81,15 +101,16 @@ public class PostController {
     public String openPostView(@ModelAttribute("params") CommentDto params, @RequestParam final int id, Model model) {
 
         //System.out.println("view 파라미터 확인 ========> " + params); // Get -> queryString 파라미터 확인 
-        
-        // 페이징 여기다가?... 아닌듯 지우기!
-        /*  
-        //CommentDto pageDto = commentService.getcommentlListPage(params);
-        //model.addAttribute("pagination", pageDto);
-        */
 
         PostResponse post = postService.findPostById(id);
         model.addAttribute ("post", post); // 게시판 상세 내용
+
+        /*  
+        // 파일 리스트 출력 여기 맞나.. 
+        List<AttachDto> fileList = postService.getAttachFileList(id);
+        System.out.println("fileList ===================> " + fileList);
+        model.addAttribute("fileList", fileList);
+        */
 
         return "post/view";
     } 
@@ -104,13 +125,31 @@ public class PostController {
     }
     */
 
-    // 게시글 수정 ajax 사용해보기
+    /*  
+    // 게시글 수정 ajax 사용해보기 (file 업로드 하기 전 ajax 통신!!! )
     // ajax로 넘겨주는 data가 json형식이기 때문에 @RequestBody로 꼭 받아줘야한다!!
     // ajax호출 컨트롤러이기 때문에 @ResponseBody를 꼭 작성해줘야한다!! 
     @PostMapping("/post/update.do")
     @ResponseBody
-    public int updatePost(@RequestBody PostRequest params, Model model) {
+    public int updatePost(@RequestBody PostRequest params, Model model) { 
         int result = postService.updatePost(params);
+        return result;
+    }
+    */
+
+
+    // ajax file 업로드 ajax 통신!!! (multipartFile) 
+    @PostMapping("/post/update.do")
+    @ResponseBody
+    //public int updatePost(@ModelAttribute PostRequest params, Model model, MultipartFile[] file) {   
+    public boolean updatePost(@ModelAttribute PostRequest params, Model model, @RequestPart(value = "files", required = false) MultipartFile[] file) {  
+                                                                                                     // MultipartFile[] files의  ---> files는 input type="file"의 name으로 작성해줘야한다!!!
+        System.out.println("params =================================================================> " + params); // write.html 에서 hidden 값으로 넘어온 것들, form태그들 확인하기!!
+        //System.out.println("params =================================================================> " + files);   
+        System.out.println("MultipartFile[] =================================================================> " + file);   
+
+        //int result = 0;
+        boolean result = postService.updatePost(params, file);
         return result;
     }
 
@@ -127,10 +166,13 @@ public class PostController {
     }
     */
 
+    // view.html 게시글 삭제
+    // form submit으로 값들을 컨트롤러로 보내서 @RequestParam으로 받음
     @PostMapping("/post/delete.do")
     public String deletePost(@RequestParam Map<String,Object> queryParams, Model model) {
+
+        System.out.println("queryParams =======================> " + queryParams);
         Map<String,Object> queryParams2 = postService.deletePost(queryParams);
-        //System.out.println("queryParams =======================> " + queryParams);
 
         MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParams2);
         return showMessageAndRedirect(message, model);

@@ -4,7 +4,7 @@
  * @param value - 타겟 밸류
  * @returns true or false
  */
-function isEmpty(value) {
+function isEmpty(value) {								                   ///// // ( Object 인지 확인 ) ///// //
 	if (value == null || value == "" || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
 		return true;
 	}

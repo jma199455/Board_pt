@@ -77,12 +77,20 @@
                         </tr>
                     </tbody>
                 </table>
-                <p class="btn_set">
-                    <!-- <a th:href="@{/post/write.do(id=${post.id})}" class="btns btn_bdr4 btn_mid">수정하기</a> -->
-                    <a href="javascript:void(0);" onclick="goWritePage();" class="btns btn_bdr4 btn_mid">수정하기</a>
-                    <button type="button" onclick="deletePost();" class="btns btn_bdr1 btn_mid">삭제하기</button>
-                    <a href="javascript:void(0);" onclick="goListPage();" class="btns btn_bdr3 btn_mid">뒤로가기</a>
-                </p>
+
+
+
+                 
+                <div>
+                    <p class="" style="text-align: center;">
+                        <!-- <a th:href="@{/post/write.do(id=${post.id})}" class="btns btn_bdr4 btn_mid">수정하기</a> -->
+                        <a href="javascript:void(0);" onclick="goWritePage();" class="btns btn_bdr4 btn_mid">수정하기</a>
+                        <button type="button" onclick="deletePost();" class="btns btn_bdr1 btn_mid">삭제하기</button>
+                        <a href="javascript:void(0);" onclick="goListPage();" class="btns btn_bdr3 btn_mid">뒤로가기</a>
+                    </p>
+                </div>
+
+
             </section>
         </div> <!--/* .content */-->
     </div>
@@ -364,7 +372,7 @@
     function deletePost() {
 
         const id = [[${post.id}]];
-
+        
         if (!confirm(id + '번 게시글을 삭제할까요?') ) {
             return false;
         }
@@ -372,6 +380,9 @@
         let inputHtml = '';
 
         new URLSearchParams(location.search).forEach((value, key) => {
+            console.log("value =============>" + value);
+            console.log("key =============>" + key);
+
             inputHtml += `<input type="hidden" name="${key}" value="${value}" />`;
         })
 

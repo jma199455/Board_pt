@@ -66,7 +66,7 @@
   </div> <!--/* .content */-->
 </th:block>
 
-
+ 
 <th:block layout:fragment="script"> <!-- 이거작성하지 않으면 script 안먹힘 (layout을 사용하고 있기 때문에 body.html에 <th:block layout:fragment="script"></th:block> 작성했기 때문에 )-->
   <script th:inline="javascript">
     /*<![CDATA[*/
@@ -194,7 +194,7 @@
         document.querySelector('.paging').innerHTML = '';
         throw new Error('Missing required parameters...');
       }
-
+      
       let html = '';
 
       // 첫 페이지, 이전 페이지
