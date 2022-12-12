@@ -45,8 +45,9 @@ public class PostController {
             PostResponse post = postService.findPostById(id);
             model.addAttribute("post", post);
 
+            // 댓글
             List<AttachDto> fileList = postService.getAttachFileList(id);
-             System.out.println("fileList ===================> " + fileList);
+            System.out.println("fileList ===================> " + fileList);
             model.addAttribute("fileList", fileList);
         
         }

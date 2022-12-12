@@ -13,6 +13,8 @@
         <div class="content">
             <section>
                 <form id="saveForm" method="post" autocomplete="off" enctype="multipart/form-data">
+                <!-- <form id="saveForm" method="post" action="/post/save.do" enctype="multipart/form-data"> --> <!-- validation 사용할 때 사용-->
+                    
                     <!--/* 게시글 수정인 경우, 서버로 전달할 게시글 번호 (PK) */-->
                     <input type="hidden" id="id" name="id" th:if="${post != null}" th:value="${post.id}" />
                     <!--/* 서버로 전달할 공지글 여부 */-->
@@ -34,7 +36,7 @@
 
                             <tr>
                                 <th>제목 <span class="es">필수 입력</span></th>
-                                <td colspan="3"><input type="text" id="title" name="title" maxlength="50" placeholder="제목을 입력해 주세요." /></td>
+                                <td colspan="3"><input type="text" id="title" name="title" maxlength="50" placeholder="제목을 입력해 주세요."/></td>
                             </tr>
 
                             <tr>
@@ -88,12 +90,13 @@
                     </div>
                     <div id="btnDiv">
                     </div>    
+                    <!-- <button type="submit" id="saveBtn" class="btns btn_st3 btn_mid">저장</button> --> <!-- validation 사용할 때 submit form 안에다가! -->
                 </form>
                     <!-- 버튼 -->
                     <div>
                         <p class="" style="text-align: right;">
-                            <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">저장</button>
-                            <!-- <a th:href="@{/post/list.do}" class="btns btn_bdr3 btn_mid">리스트 목록으로</a> -->
+                            <!-- <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">저장</button> -->
+                            <!-- <a th:href="@{/post/list.do}" class="btns btn_bdr3 btn_mid">리스트 목록으로</a> 페이징 처리 전 -->
                             <a href="javascript:void(0);" onclick="goListPage();" class="btns btn_bdr3 btn_mid">리스트 목록으로</a>
                         </p>
                      </div>
@@ -107,7 +110,7 @@
     /*<![CDATA[*/
 
         window.onload = () => {
-
+            
             renderPostInfo();
 
             // 파일 갯수당 확인
@@ -115,8 +118,43 @@
             console.log($('input[name=fileIdxs]')[1]);
             console.log($('input[name=fileIdxs]')[2]);
 
-        }
 
+        } // end onload 
+
+
+        /* jQuery validation plugin 사용  */
+        $(document).ready(function () {          
+    
+            $('#saveForm').validate({
+
+                rules : {
+                    title : {
+                        required : true
+                    }, writer : {
+                        required : true
+                    }, content : {
+                        required : true
+                    }
+                }, 
+                messages : {
+                    title : {
+                        required : "제목을 입력해 주세요."
+                    },
+                    writer : {
+                        required : "이름을 입력해 주세요."
+                    }, 
+                    content : {
+                        required : "내용을 입력해 주세요."
+                    }
+                }
+                ,
+                submitHandler: function (){ // 검증 성공시 다음 처리, ajax로 submit 처리 시 사용
+                    alert("검증성공");
+                    savePost(); 
+                }
+            });
+
+        }); 
 
         // 등록일 초기화
         function initCreatedDate() {
@@ -196,11 +234,14 @@
             const fields = [form.title, form.writer, form.content];
             const fieldNames = ['제목', '이름', '내용'];
 
+            // validation.js 체크 문제없으면 주석 해제
+            /*  
             for (let i = 0, len = fields.length; i < len; i++) {
                 isValid(fields[i], fieldNames[i]); // 공통 함수
             }
+            */
 
-            document.getElementById('saveBtn').disabled = true;
+            // document.getElementById('saveBtn').disabled = true;
             form.noticeYn.value = form.isNotice.checked;
             
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <body th:fragment="main-body">
     <div id="adm_wrap">
         <header>
@@ -7,16 +8,17 @@
                 <h1>게시판 프로젝트</h1>
                 <div class="top_menu">
                     <div class="login_user"><strong><i class="far fa-user-circle"></i> 도뎡</strong>님 반갑습니다.</div>
-                    <div class="logout"><button type="button"><span class="skip_info">로그아웃</span><i class="fas fa-sign-out-alt"></i></button></div>
+                    <div class="logout"><button type="button"><span class="skip_info">로그아웃</span><i
+                                class="fas fa-sign-out-alt"></i></button></div>
                 </div>
             </div>
         </header>
 
-        
-        <!-- 모달 방법1 --> 
+
+        <!-- 모달 방법1 -->
         <th:block layout:fragment="modal"></th:block>
 
-         <!-- 모달 방법2 -->
+        <!-- 모달 방법2 -->
         <!-- <th:block th:insert="common/view_modal :: view_modal"></th:block> -->
 
 
@@ -24,7 +26,7 @@
             <div class="menu_toggle"><span></span></div>
             <!--/* 좌측 메뉴 영역 */-->
             <div class="lcontent">
-                
+
                 <nav>
                     <ul>
                         <li class="has_sub"><a href="javascript: void(0);" class="on"><span>게시판 관리</span></a>
@@ -38,7 +40,7 @@
                     </ul>
                 </nav>
             </div>
-            
+
             <div class="main-content">
                 <!--/* 우측 영역 */-->
                 <div class="rcontent">
@@ -52,7 +54,8 @@
 
                 </div>
             </div>
-        </div> <!--/* // #container */-->
+        </div>
+        <!--/* // #container */-->
 
 
         <footer>Copyright(c)네임즈.All rights reserved.</footer>
@@ -66,16 +69,21 @@
     <script th:src="@{/js/function.js}"></script>
     <script th:src="@{/js/common.js}"></script>
 
-    <script th:src="@{/scripts/main.js}"></script> 
+    <script th:src="@{/scripts/main.js}"></script>
     <script th:src="@{/scripts/common.js}"></script>
 
     <script src="https://kit.fontawesome.com/79613ae794.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-    
+
+
+    <!-- validate.js 추가 -->
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script> <!-- CDN주소 -->
+    <!-- <script th:src="@{/scripts/jquery.validate.min.js}"></script> -->
+
 
     <script>
-        
-        $(document).ready(function(){
+
+        $(document).ready(function () {
 
             // 목록 클릭했을 때 class 추가 및 제거
             /*  
@@ -90,11 +98,12 @@
             */
 
         })
-        
+
     </script>
 
 
 
     <th:block layout:fragment="script"></th:block>
 </body>
+
 </html>
