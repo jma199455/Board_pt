@@ -78,8 +78,19 @@
                     </tbody>
                 </table>
 
-
-
+                <!-- 파일 리스트 출력 부분-->
+                <div th:if="${not #lists.isEmpty( fileList )}" class="form-group">
+                    <label for="inp-type-4" class="col-sm-2 control-label">File</label>
+                    <div class="col-sm-10">
+                        <div class="form-control file_list">
+                            <!-- <a th:each="row, status : ${fileList}" th:href="@{/post/download.do( idx=${row.idx} )}"> -->
+                            <a th:each="row, status : ${fileList}" th:href="@{/post/download.do(idx=${row.idx})}">
+                                <i class="fa fa-file-o" aria-hidden="true"></i>
+                                [[${row.originalName}]]
+                            </a>
+                        </div>
+                    </div>
+                </div>
                  
                 <div>
                     <p class="" style="text-align: center;">

@@ -9,7 +9,7 @@ public interface AttachMapper {
 
 	public int insertAttach(List<AttachDto> attachList);
 	// 파일 다운로드에서 사용
-	public AttachDto selectAttachDetail(Long id);
+	public AttachDto selectAttachDetail(int id);
 
 	public int deleteAttach(int boardIdx);
 

@@ -201,6 +201,8 @@ public class PostService {
         }
         */
 
+
+        // 1. 
         /*  
         // return new PagingResponse<>(list, pagination); 생성자로 return하지 않고 set으로 넣어보기 ==> 가능
         PagingResponse<PostResponse> temp = new PagingResponse<>();
@@ -209,6 +211,7 @@ public class PostService {
         return temp;
         */
 
+        // 2. 
         return new PagingResponse<>(list, pagination);
     }
 
@@ -222,5 +225,11 @@ public class PostService {
         return result;
 
     }
+
+
+    // 파일 다운로드
+    public AttachDto getAttachDetail(int idx) {
+        return attachMapper.selectAttachDetail(idx);
+    } 
 
 }

@@ -95,7 +95,7 @@
                     <!-- 버튼 -->
                     <div>
                         <p class="" style="text-align: right;">
-                            <!-- <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">저장</button> -->
+                            <button type="button" id="saveBtn" onclick="savePost();" class="btns btn_st3 btn_mid">저장</button>
                             <!-- <a th:href="@{/post/list.do}" class="btns btn_bdr3 btn_mid">리스트 목록으로</a> 페이징 처리 전 -->
                             <a href="javascript:void(0);" onclick="goListPage();" class="btns btn_bdr3 btn_mid">리스트 목록으로</a>
                         </p>
@@ -121,8 +121,8 @@
 
         } // end onload 
 
-
         /* jQuery validation plugin 사용  */
+        /*  
         $(document).ready(function () {          
     
             $('#saveForm').validate({
@@ -155,6 +155,7 @@
             });
 
         }); 
+        */
 
         // 등록일 초기화
         function initCreatedDate() {

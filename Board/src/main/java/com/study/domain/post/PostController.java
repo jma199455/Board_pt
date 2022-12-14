@@ -1,9 +1,21 @@
 package com.study.domain.post;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Param;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +33,6 @@ import com.study.common.dto.SearchDto;
 import com.study.paging.PagingResponse;
 
 import lombok.RequiredArgsConstructor;
-
 @Controller
 @RequiredArgsConstructor
 public class PostController {
@@ -106,13 +117,9 @@ public class PostController {
         PostResponse post = postService.findPostById(id);
         model.addAttribute ("post", post); // 게시판 상세 내용
 
-        /*  
-        // 파일 리스트 출력 여기 맞나.. 
-        List<AttachDto> fileList = postService.getAttachFileList(id);
-        System.out.println("fileList ===================> " + fileList);
+        List<AttachDto> fileList = postService.getAttachFileList(id); // 파일 상세
         model.addAttribute("fileList", fileList);
-        */
-
+        
         return "post/view";
     } 
 
@@ -178,5 +185,71 @@ public class PostController {
         MessageDto message = new MessageDto("게시글 삭제가 완료되었습니다.", "/post/list.do", RequestMethod.GET, queryParams2);
         return showMessageAndRedirect(message, model);
     }
+
+    // 상세화면 파일 다운로드
+	@GetMapping("/post/download.do")
+	public void downloadAttachFile(@RequestParam(value = "idx", required = false) final Integer idx, Model model, HttpServletResponse response) throws ParseException {
+
+		if (idx == null) 
+            throw new RuntimeException("올바르지 않은 접근입니다.");
+
+		AttachDto fileInfo = postService.getAttachDetail(idx);
+		if (fileInfo == null || "Y".equals(fileInfo.getDeleteYn())) {
+			throw new RuntimeException("파일 정보를 찾을 수 없습니다.");
+		}
+
+        // VO에서 fileInfo.getInsertTime() 값
+        String temp = fileInfo.getInsertTime();
+
+        // 문자열 -> date (insertTime이 String이기 때문에 format형식 바꿔주려면 date형태로 변환)
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = formatter.parse(temp);
+      	
+		// date -> 문자열 (format형식 사용)
+        SimpleDateFormat dateLocal = new SimpleDateFormat("yyMMdd");
+        String uploadDate = dateLocal.format(date);
+
+		String uploadPath = Paths.get("C:", "dev_workspace", "upload", uploadDate).toString();
+
+		String filename = fileInfo.getOriginalName();
+
+        // file객체 생성 (path에 있는 파일정보)
+		File file = new File(uploadPath, fileInfo.getSaveName());
+        System.out.println(file);
+        System.out.println(file.getName());
+        System.out.println(file.getPath());
+
+
+        
+		try {
+
+            // new File()을 이용해 path에 있는 파일 정보를 가져온다.
+            // byte[] data = FileUtils.readFileToByteArray(new File(path)); // 정보의 저장위치(storedFilPath)를 이용해 파일을 읽은후 byte[]형태로 변환, 
+			byte[] data = FileUtils.readFileToByteArray(file);  // 파일을 Byte배열로 변환한다. 
+
+            //response헤더에 타입, 크기,형태를 설정
+			response.setContentType("application/octet-stream");
+			response.setContentLength(data.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(filename, "UTF-8") + "\";");    // 
+
+            //읽어온 파일 정보를 response에 작성
+			response.getOutputStream().write(data);
+            //버퍼정리후 닫아줌
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+
+		} catch (IOException e) {
+			throw new RuntimeException("파일 다운로드에 실패하였습니다.");
+
+		} catch (Exception e) {
+			throw new RuntimeException("시스템에 문제가 발생하였습니다.");
+		}
+
+        
+
+
+
+	}
 
 }

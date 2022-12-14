@@ -1,5 +1,7 @@
 package com.study.domain.post;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 
 @Data

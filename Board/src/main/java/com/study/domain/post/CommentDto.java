@@ -1,6 +1,7 @@
 package com.study.domain.post;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.LocalDateTime;
+
 import com.study.paging.PaginationComment;
 
 import lombok.Data;
@@ -16,8 +17,8 @@ public class CommentDto {
 
 	private String writer;
 
-	
 	/** 삭제 여부 */
+	
 
 	private String deleteYn;
 	
