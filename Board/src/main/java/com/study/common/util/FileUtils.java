@@ -58,8 +58,8 @@ public class FileUtils {
 
 			System.out.println("filefilefilefilefile=============================> " + file.getSize()); // 파일 갯수만큼 size 확인
 
-			System.out.println(files[0].getSize()); 
-			System.out.println(file.getSize()); // 동일한지 확인
+			System.out.println(files[0].getSize()); // 동일한지 확인
+			System.out.println(file.getSize()); 	// 동일한지 확인
 			
 			// files 데이터 중에서 사이즈 1보다 작으면 등록 x 다음 for문 진행
             if (file.getSize() < 1) { 

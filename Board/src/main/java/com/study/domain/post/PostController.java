@@ -51,7 +51,7 @@ public class PostController {
     // RequestParam은 get방식 쿼리스트링 받을 때 주로 사용!!!
     @GetMapping("/post/write.do")
     public String openPostWrite(@RequestParam(value = "id", required = false) final Integer id, Model model) {
-        System.out.println("id =================> " + id);
+        //System.out.println("id =================> " + id);
         if (id != null) {
             PostResponse post = postService.findPostById(id);
             model.addAttribute("post", post);

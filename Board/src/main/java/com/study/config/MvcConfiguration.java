@@ -14,8 +14,9 @@ public class MvcConfiguration implements WebMvcConfigurer {
     
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(new LoggerInterceptor()) 
-		.excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**");
+		registry.addInterceptor(new LoggerInterceptor()) // InterceptorRegistry의 addInterceptor( ) 메서드를 이용하여 인터셉터 클래스를 등록
+		.excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**", "/images/**", "/js/**");	// 인터셉터 호출에서 제외할 URL 또는 PATH  , addPathPatterns( )는 경로 추가.
+														
 	}
     
 

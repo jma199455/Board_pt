@@ -1,5 +1,6 @@
 package com.study;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -9,9 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.study.common.dto.SearchDto;
 import com.study.domain.post.PostMapper;
 import com.study.domain.post.PostRequest;
 import com.study.domain.post.PostResponse;
+import com.study.paging.Pagination;
+import com.study.paging.PagingResponse;
 
 @SpringBootTest
 public class PostMapperTest {
@@ -28,7 +32,13 @@ public class PostMapperTest {
         params.setNoticeYn(false);
         postMapper.save(params);
 
-        List<PostResponse> posts = postMapper.findAll();
+        SearchDto dto = new SearchDto();
+        
+        
+        Pagination pagination = new Pagination(postMapper.count(dto), dto);
+        dto.setPagination(pagination);
+
+        List<PostResponse> posts = postMapper.findAll(dto);
         System.out.println("전체 게시글 개수는 : " + posts.size() + "개입니다.");
     }
 

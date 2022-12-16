@@ -31,7 +31,7 @@ public class DatabaseConfig {
     }
 
     @Bean
-    public DataSource dataSource() {
+    public DataSource dataSource() { // 데이터 소스는 커넥션 풀을 지원하기 위한 인터페이스.
         return new HikariDataSource(hikariConfig());
     }
 
