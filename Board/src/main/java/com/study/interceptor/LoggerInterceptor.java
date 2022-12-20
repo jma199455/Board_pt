@@ -15,7 +15,7 @@ public class LoggerInterceptor implements HandlerInterceptor{
 
     // preHandle() : 컨트롤러보다 먼저 수행되는 메서드
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception { // 매개변수 Object는 핸들러 정보를 의미한다.
         log.debug("==================== Interceptor BEGIN ====================");
         log.debug("Request URI ===> " + request.getRequestURI());
         log.debug("===========================================================");
@@ -48,5 +48,5 @@ public class LoggerInterceptor implements HandlerInterceptor{
         HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
     }
     
-    
+    // afterCompletion 화면에 보여지고 수행되는 메서드
 }

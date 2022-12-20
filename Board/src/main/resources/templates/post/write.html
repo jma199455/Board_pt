@@ -236,11 +236,12 @@
             const fieldNames = ['제목', '이름', '내용'];
 
             // validation.js 체크 문제없으면 주석 해제
-            /*  
             for (let i = 0, len = fields.length; i < len; i++) {
-                isValid(fields[i], fieldNames[i]); // 공통 함수
+                var temp = isValid(fields[i], fieldNames[i]); // 공통 함수
+                if (!temp) {
+                    return false;
+                }
             }
-            */
 
             // document.getElementById('saveBtn').disabled = true;
             form.noticeYn.value = form.isNotice.checked;
@@ -250,34 +251,34 @@
             var data = [[ ${post == null} ]];
             if(!data) {
                 
-                // multipart-form 아니였을 때
-                /*  
-                var queryString = new URLSearchParams(location.search);
-                var idCheck = queryString.get('id');
-
-                var url = '/post/update.do';
-                var data = {
-                        id : idCheck,
-                        title : form.title.value,
-                        writer : form.writer.value,
-                        content : form.writer.value,
-                        noticeYn : form.noticeYn.value
-                    };
-                
-                var callback = function(data){
-                    if(data >= 1) {
-                        alert('수정이 완료되었습니다.');
-                    } else {
-                        alert('수정이 실패하였습니다.');
-                    }
+                    // multipart-form 아니였을 때
+                    /*  
                     var queryString = new URLSearchParams(location.search);
-                    queryString.delete('id');
-                    var listUrl = '/post/list.do' + '?' + queryString.toString();
-                    location.href = listUrl; 
-                };
-                
-                restAjax(url, data, callback);
-                */
+                    var idCheck = queryString.get('id');
+
+                    var url = '/post/update.do';
+                    var data = {
+                            id : idCheck,
+                            title : form.title.value,
+                            writer : form.writer.value,
+                            content : form.writer.value,
+                            noticeYn : form.noticeYn.value
+                        };
+                    
+                    var callback = function(data){
+                        if(data >= 1) {
+                            alert('수정이 완료되었습니다.');
+                        } else {
+                            alert('수정이 실패하였습니다.');
+                        }
+                        var queryString = new URLSearchParams(location.search);
+                        queryString.delete('id');
+                        var listUrl = '/post/list.do' + '?' + queryString.toString();
+                        location.href = listUrl; 
+                    };
+                    
+                    restAjax(url, data, callback);
+                    */
 
                 var url = '/post/update.do';
 
