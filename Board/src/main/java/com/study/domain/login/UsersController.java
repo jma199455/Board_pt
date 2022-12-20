@@ -40,8 +40,13 @@ public class UsersController {
         //return "/post/list.do"; 안되는 이유확인
     }
 
-    // 로그아웃
-
+    // 로그아웃 하는 부분
+    // post redirect 클래스 사용해서 보내보기
+    @GetMapping("/logout.do")
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션 초기화
+        return "redirect:/login"; // 로그아웃 후 로그인화면으로 이동
+    }
 
 
 }

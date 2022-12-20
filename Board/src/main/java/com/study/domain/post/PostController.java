@@ -6,14 +6,12 @@ import java.net.URLEncoder;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -246,10 +244,8 @@ public class PostController {
 			throw new RuntimeException("시스템에 문제가 발생하였습니다.");
 		}
 
-        
-
-
-
 	}
+
+
 
 }
