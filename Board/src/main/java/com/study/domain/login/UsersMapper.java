@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 public interface UsersMapper {
     
     public UsersDto usersLogin(UsersDto dto) throws Exception;
-
+    public int insert(UsersDto dto) throws Exception;
 
 
 

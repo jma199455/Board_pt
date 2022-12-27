@@ -14,5 +14,12 @@ public class UsersService {
         return usersMapper.usersLogin(usersDto);
 
     }
+
+    public int insert(UsersDto usersDto) throws Exception{
+
+        return usersMapper.insert(usersDto);
+
+    }
+
     
 }

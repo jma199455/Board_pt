@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.study.common.dto.MessageDto;
 import com.study.common.dto.SearchDto;
+import com.study.domain.login.UsersService;
 import com.study.paging.PagingResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,10 @@ public class PostController {
 
     @Autowired
     private final PostService postService;
+
+
+    @Autowired
+    private final UsersService usersService;
 
     // 사용자에게 메시지를 전달하고, 페이지를 리다이렉트 한다.
     private String showMessageAndRedirect(final MessageDto params, Model model) {
@@ -93,7 +98,7 @@ public class PostController {
 
         System.out.println("params =================================================================> " + params);
         PagingResponse<PostResponse> response = postService.findAllPost(params);
-        
+
         model.addAttribute("response", response);
         return "post/list";
     }
@@ -229,7 +234,7 @@ public class PostController {
 			response.setContentType("application/octet-stream");
 			response.setContentLength(data.length);
 			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(filename, "UTF-8") + "\";");    // 
+			response.setHeader("Content-Disposition", "attachment; fileName=\"" + URLEncoder.encode(filename, "UTF-8") + "\";"); 
 
             //읽어온 파일 정보를 response에 작성
 			response.getOutputStream().write(data);

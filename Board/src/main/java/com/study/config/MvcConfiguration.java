@@ -38,6 +38,7 @@ public class MvcConfiguration implements WebMvcConfigurer { // 해당 인터페�
 			"/login", 
 			"/loginCheck",
 			"/logout"
+			
 
 		};
 
@@ -66,5 +67,8 @@ public class MvcConfiguration implements WebMvcConfigurer { // 해당 인터페�
 		registrationBean.setUrlPatterns(Arrays.asList("/post/*")); // addUrlPatterns("/*"); 과 같다  , list로도 받을 수 있음 .setUrlPatterns(Collections.singletonList("/post/*"));
 		return registrationBean;
 	}
+
+
+
 
 }

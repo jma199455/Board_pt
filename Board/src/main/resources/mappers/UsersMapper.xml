@@ -11,5 +11,17 @@
     </select>
 
 
+    <insert id="insert" parameterType="com.study.domain.login.UsersDto">
+        insert into btc_login_h(
+            user_seq,
+            login_dtm,
+            create_date
+        ) 
+        values(
+            #{userSeq},
+            now(),
+            #{createDate}
+        )
+    </insert>
 
 </mapper>

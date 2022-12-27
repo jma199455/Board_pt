@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 // 로그인처리를 담당하는 인터셉터
 public class LoggerInterceptor implements HandlerInterceptor{
-
+    
     // preHandle() : 컨트롤러보다 먼저 수행되는 메서드
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception { // 매개변수 Object는 핸들러 정보를 의미한다.
@@ -24,6 +24,7 @@ public class LoggerInterceptor implements HandlerInterceptor{
         HttpSession session =  request.getSession();
         Object obj = session.getAttribute("login");
         //System.out.println(obj);
+
         if (obj == null) {
             // 로그인이 안되어 있는 상태임으로 로그인 폼으로 다시 돌려보냄(redirect)
             response.sendRedirect("/login");
@@ -37,7 +38,6 @@ public class LoggerInterceptor implements HandlerInterceptor{
         
         // return HandlerInterceptor.super.preHandle(request, response, handler);
     }
-    
     
     // 컨트롤러가 수행되고 화면이 보여지기 직전에 수행되는 메서드
     @Override
