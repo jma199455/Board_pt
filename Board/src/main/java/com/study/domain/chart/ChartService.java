@@ -18,7 +18,7 @@ public class ChartService {
     @Autowired
     private ChartMapper chartMapper;
 
-    public StatisticsLineResVO getLine(ChartRequestVO request) throws Exception {
+    public StatisticsLineResVO getLine(ChartRequestVO request, String type) throws Exception {
 
         //StatisticsLineResVO result = new StatisticsLineResVO();
         
@@ -55,7 +55,13 @@ public class ChartService {
             // 여기부터 확인 
             List<StatisticsGenderBarVO> line = new ArrayList<>();  // 리스트 찍어보기
 
-            line = chartMapper.getListLine(request);
+            if (type.equals("L1")) {
+                System.out.println("들어감1");
+                line = chartMapper.getListLine(request);
+            } else {
+                System.out.println("들어감2");
+                line = chartMapper.getListLine2(request);
+            }
             //log.debug("line : {} " , line);
             // line = chartMapper.getListLine2(request)
 
@@ -87,6 +93,8 @@ public class ChartService {
         return new StatisticsLineResVO(labels.stream().toArray(String[]::new), men, women, total);	// String[]
         //return result;
     }
-    
 
-}
+
+
+
+} // end class

@@ -15,7 +15,8 @@ public class ChartController {
 
 
     // 차트 서비스
-    @Autowired ChartService chartService;
+    @Autowired 
+    private ChartService chartService;
 
 
     // 파라미터로 search 등록 (startDt, endDt) 사용하기 위해
@@ -33,11 +34,12 @@ public class ChartController {
 		cal.add(Calendar.DATE, -7);	// 1주일 전 부터
 		search.setStartDt(sdf.format(cal.getTime()));
 
-        StatisticsLineResVO data = chartService.getLine(search);    // 확인
-        model.addAttribute("data", data);
+        //StatisticsLineResVO data = chartService.getLine(search);    // 확인
+        //model.addAttribute("data", data);
+        model.addAttribute("data", chartService.getLine(search, "L1"));
+        model.addAttribute("data2", chartService.getLine(search, "L2"));
 
-        // 이걸로 넘겨보기
-        //model.addAttribute("data", chartService.getLine(search));
+
 
         return "chart/main";
     }

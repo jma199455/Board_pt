@@ -21,7 +21,25 @@
         GROUP BY label
     </select>
     
-    
+    <select id="getListLine2" parameterType="com.study.domain.chart.ChartRequestVO" resultType="com.study.domain.chart.StatisticsGenderBarVO">
+        SELECT
+            label
+            ,SUM(IF(gender_code = 'M', 1, 0)) AS men
+            ,SUM(IF(gender_code = 'F', 1, 0)) AS women
+            ,COUNT(*) AS total
+        FROM (					
+                SELECT 
+                    distinct(blh.user_seq) AS user_seq
+                    ,ifnull(bmm.gender_code, 'U') AS gender_code
+                    ,date_format(blh.login_dtm, '%Y-%m-%d') AS label 
+                FROM btc_login_h blh 
+                    JOIN users bmm ON bmm.user_seq = blh.user_seq 
+                    WHERE blh.login_dtm BETWEEN '2022-12-20' AND DATE_ADD('2022-12-27', INTERVAL 1 DAY) 	
+        ) um
+        GROUP BY label
+    </select> 
+
+
 
 
 

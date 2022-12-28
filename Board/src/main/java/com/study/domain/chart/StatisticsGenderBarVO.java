@@ -6,9 +6,12 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class StatisticsGenderBarVO {
+
     private String label;
     private int men;
     private int women;
     private int total;
+    
+    //private int userSeq;
 
 }
