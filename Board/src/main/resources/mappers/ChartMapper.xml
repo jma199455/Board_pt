@@ -34,7 +34,7 @@
                     ,date_format(blh.login_dtm, '%Y-%m-%d') AS label 
                 FROM btc_login_h blh 
                     JOIN users bmm ON bmm.user_seq = blh.user_seq 
-                    WHERE blh.login_dtm BETWEEN '2022-12-20' AND DATE_ADD('2022-12-27', INTERVAL 1 DAY) 	
+                    WHERE blh.login_dtm BETWEEN #{param.startDt} AND DATE_ADD(#{param.endDt}, INTERVAL 1 DAY) 	
         ) um
         GROUP BY label
     </select> 

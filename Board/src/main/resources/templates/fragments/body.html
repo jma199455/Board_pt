@@ -5,9 +5,15 @@
     <div id="adm_wrap">
         <header>
             <div class="head">
-                <h1>게시판 프로젝트</h1>
+                <!-- <h1>게시판 프로젝트</h1> -->
+                <h1><a href="/chart/main.do">Admin</a></h1>
                 <div class="top_menu">
-                    <div class="login_user"><strong><i class="far fa-user-circle"></i> 도뎡</strong>님 반갑습니다.</div>
+
+
+
+                    <!-- 컨트롤러에서 계속 session정보를 넘겨줄 수 없는거 같은데.. 당부에서는 sec:authentication="principal.name"> 이렇게 받아주고 있음 -->
+                    <!-- 일단 차트 컨트롤러 /chart/main.do 에만 session 정보 userName 데이터 넘겨주고 있음 -->
+                    <div class="login_user"><strong><i class="far fa-user-circle"></i>[[${userName}]]</strong>님 반갑습니다.</div>
                     <div class="logout"><button type="button" id="logoutBtn"><span class="skip_info">로그아웃</span><i
                                 class="fas fa-sign-out-alt"></i></button></div>
                 </div>
@@ -81,21 +87,30 @@
     <!-- <script th:src="@{/scripts/jquery.validate.min.js}"></script> -->
 
 
-    <script>
-
+    <script th:inline="javascript">
+        
         $(document).ready(function () {
+            
 
-            // 목록 클릭했을 때 class 추가 및 제거
-            /*  
-            $('nav>ul>li>ul>li>a').click(function(){
-                console.log(this);
-                $('nav > ul > li > ul > li > a.on').removeClass("on");
+            // 목록 클릭했을 때 class 추가 및 제거            
+            // $('#qqq > li > a').click(function(){
+            $('#qqq li a').click(function(){
+               console.log(this);
+               
+                //$('#qqq > li > a').removeClass("on");
+
                 $(this).addClass('on');
+                console.log('aaaa');
+                //$('.has_sub > ul > li > a.on').removeClass("on");
+
                 // $(this).attr("class", "on");    // 클래스 추가 유지가 안됨..
-                console.log(this);
             
             });
-            */
+
+
+            var data = [[${userName}]];
+            //console.log(data);
+
             $('#logoutBtn').click(function(){
                 location.href = '/logout.do';
             });

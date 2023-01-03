@@ -66,7 +66,8 @@ public class UsersController {
             int result = usersService.insert(dto);
             System.out.println("result ================> " + result);
             if (result > 0) {
-                returnURL = "redirect:/post/list.do";
+                //returnURL = "redirect:/post/list.do";
+                returnURL = "redirect:/chart/main.do";
             }
 
         } else {

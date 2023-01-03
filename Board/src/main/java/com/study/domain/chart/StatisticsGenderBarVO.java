@@ -11,7 +11,5 @@ public class StatisticsGenderBarVO {
     private int men;
     private int women;
     private int total;
-    
-    //private int userSeq;
 
 }

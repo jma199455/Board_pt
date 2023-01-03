@@ -5,12 +5,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.study.domain.login.UsersDto;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class ChartController {
 
 
@@ -21,10 +28,16 @@ public class ChartController {
 
     // 파라미터로 search 등록 (startDt, endDt) 사용하기 위해
     @GetMapping("/chart/main.do")
-    public String openPostWrite(ChartRequestVO search, Model model) throws Exception {
+    public String openPostWrite(ChartRequestVO search, Model model, HttpSession session) throws Exception {
+
+        // 차트 페이지 접속시 세션으로 userName 넘기기
+        Object obj = session.getAttribute("login");
+        UsersDto dto = (UsersDto)obj;
+        model.addAttribute("userName",dto.getUserName());
+        // end
 
         List<String> labels = new ArrayList<>();
-        System.out.println(labels.size());
+        System.out.println(labels.size()); // 0
 
         // 전일 ~일주일 간 방문자수 날짜
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -39,18 +52,8 @@ public class ChartController {
         model.addAttribute("data", chartService.getLine(search, "L1"));
         model.addAttribute("data2", chartService.getLine(search, "L2"));
 
-
-
         return "chart/main";
     }
-
-    /*  
-    @GetMapping("/chart/chart.do")
-    public String openGetChart() {
-        return "chart/chart";
-    }
-    */
-
 
 
 

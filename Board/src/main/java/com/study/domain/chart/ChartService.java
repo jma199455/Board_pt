@@ -20,20 +20,18 @@ public class ChartService {
 
     public StatisticsLineResVO getLine(ChartRequestVO request, String type) throws Exception {
 
-        //StatisticsLineResVO result = new StatisticsLineResVO();
-        
+
+        // StatisticsLineResVO result = new StatisticsLineResVO(); setter 로 값넣고 리턴하기 위해
+
         // 전일 ~ 1주일 전 까지 날짜
         List<String> labels = new ArrayList<>();
-
-        // 그냥 다 밑에다 선언하면 안되나?
-		Integer[] men = new Integer[labels.size()]; // 일단 0으로 설정??
+        
+        // try 안에 선언하면 return 못함
+		Integer[] men = new Integer[labels.size()]; // 일단 0으로 선언 초기화는 아직
 		Integer[] women = new Integer[labels.size()];
 		Integer[] total = new Integer[labels.size()];
-        //
 
         try {
-            log.debug(request.getStartDt());
-            log.debug(request.getEndDt());
 
             // 날짜 비교를 위해
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -41,35 +39,37 @@ public class ChartService {
             cal1.setTime(sdf.parse(request.getStartDt()));
             Calendar cal2 = Calendar.getInstance();
             cal2.setTime(sdf.parse(request.getEndDt()));
-
-            while(cal1.compareTo(cal2) != 1) {  // 1 크다 0같다 -1 작다
+            
+            // 전일 보다 큰 경우 while문 탈출
+            while(cal1.compareTo(cal2) != 1) {  // 1크다, 0같다, -1작다
 				labels.add(sdf.format(cal1.getTime()));
-				cal1.add(Calendar.DATE, 1);     // 해당 부분 주석 -> 무한루프
+				cal1.add(Calendar.DATE, 1);     // cal1 (startDt) 를 1주일 전부터 하나씩 증가시켜 endDt와 비교해야 하기 때문에!
 			}
 			log.debug("label : {}", labels);
 
+            // list size만큼 배열 사이즈 선언
             men = new Integer[labels.size()];
 			women = new Integer[labels.size()];
 			total = new Integer[labels.size()];
 
-            // 여기부터 확인 
-            List<StatisticsGenderBarVO> line = new ArrayList<>();  // 리스트 찍어보기
+            List<StatisticsGenderBarVO> line = new ArrayList<>();  // 쿼리 결과 담아올 리스트
+
+            log.debug("cccccccccccccccccccccccccccc ====> " + request.getStartDt());
+            log.debug("cccccccccccccccccccccccccccc2 ====> " + request.getEndDt());
 
             if (type.equals("L1")) {
-                System.out.println("들어감1");
-                line = chartMapper.getListLine(request);
+                line = chartMapper.getListLine(request);    // 방문횟수
             } else {
-                System.out.println("들어감2");
-                line = chartMapper.getListLine2(request);
+                line = chartMapper.getListLine2(request);   // 방문자수
             }
-            //log.debug("line : {} " , line);
-            // line = chartMapper.getListLine2(request)
 
 
+             
             for(int i = 0; i < labels.size(); i++) {
-				men[i] = women[i] = total[i] = 0; // 제거하고 해보기 , 초기화 꼭 해야하는지
+				men[i] = women[i] = total[i] = 0; // 초기화 꼭 해야함 (data값이 없는 경우 0으로 표시해야 하기 때문에!!!) 
+                                                  // 초기화 하지 않으면 데이터가 있는 날짜만 표시됨
 				for(StatisticsGenderBarVO vo : line) {
-					if(labels.get(i).equals(vo.getLabel())) {
+					if(labels.get(i).equals(vo.getLabel())) {   // vo.getLabel() : 데이터가 있는 label만 골라서 해당 값들 넣기 위한 조건
 						men[i] = vo.getMen();
 						women[i] = vo.getWomen();
 						total[i] = vo.getTotal();
@@ -78,8 +78,8 @@ public class ChartService {
 				}
 			}
 
-            // return 생성자 사용하지 않고 set으로 해보기
             /*  
+            // return 생성자 사용하지 않고 setter 로 return 하기
             result.setLabels(labels.stream().toArray(String[]::new));
             result.setMen(men);
             result.setWomen(women);
@@ -90,8 +90,26 @@ public class ChartService {
             e.printStackTrace();
         }
 
-        return new StatisticsLineResVO(labels.stream().toArray(String[]::new), men, women, total);	// String[]
-        //return result;
+        // toArray 사용 (배열 선언과 동시에 할당) , List를 String Array로 바꿈
+        /* 1. 
+        String[] arr = labels.toArray(String[]::new);  String[]::new 사용
+        */
+        /* 2. 
+        String[] arr = labels.toArray(new String[0]);  new String[0] 사용 toArray인자로 넘어가는 배열 객체 사이즈보다 list size가 더 커서 list size로 배열 반환
+        */
+
+        /* 3.   
+        String[] arr = new String[labels.size()];      String[] 사이즈 선언 후 사이즈만큼 배열 반환
+        arr = labels.toArray(arr);
+        */
+        
+        String[] temp = labels.toArray(String[]::new);  // List를 String Array로 바꿈
+        System.out.println(temp);
+        // 같은 의미 생성자로 return  
+        return new StatisticsLineResVO(labels.toArray(String[]::new), men, women, total);	
+        //return new StatisticsLineResVO(labels.stream().toArray(String[]::new), men, women, total);	// Stream API 사용 labels.toArray(String[]::new)랑 의미는 같음 
+
+        // return result; setter사용시 리턴
     }
 
 
