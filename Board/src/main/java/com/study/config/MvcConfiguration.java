@@ -28,7 +28,6 @@ public class MvcConfiguration implements WebMvcConfigurer { // 해당 인터페�
 	public void addInterceptors(InterceptorRegistry registry) {
 		
 		final String[] excludePath = {
-
 			"/css/**", 
 			"/fonts/**", 
 			"/plugin/**", 
@@ -37,9 +36,10 @@ public class MvcConfiguration implements WebMvcConfigurer { // 해당 인터페�
 			"/js/**", 
 			"/login", 
 			"/loginCheck",
-			"/logout"
+			"/logout",
+			"/signupForm",
+			"/signup"
 			
-
 		};
 
 		// InterceptorRegistry의 addInterceptor( ) 메서드를 이용하여 인터셉터 클래스를 등록

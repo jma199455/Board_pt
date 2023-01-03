@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,11 +14,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.study.common.dto.MessageDto;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class UsersController {
     
     @Autowired
     UsersService usersService;
+
+    @GetMapping("/signupForm")
+    public String signupForm() {    
+
+        return "login/signup";
+    }
+
+    @PostMapping("/signup")
+    public String signUpProc(@ModelAttribute UsersDto params, Model model) {    
+
+        
+
+        return "redirect:/login";
+    }
 
     
     // loginForm.html 하나로만 error 문구 띄우기

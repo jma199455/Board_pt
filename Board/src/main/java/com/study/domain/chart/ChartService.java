@@ -8,6 +8,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -102,14 +104,18 @@ public class ChartService {
         String[] arr = new String[labels.size()];      String[] 사이즈 선언 후 사이즈만큼 배열 반환
         arr = labels.toArray(arr);
         */
-        
+
         String[] temp = labels.toArray(String[]::new);  // List를 String Array로 바꿈
         System.out.println(temp);
+
         // 같은 의미 생성자로 return  
         return new StatisticsLineResVO(labels.toArray(String[]::new), men, women, total);	
         //return new StatisticsLineResVO(labels.stream().toArray(String[]::new), men, women, total);	// Stream API 사용 labels.toArray(String[]::new)랑 의미는 같음 
 
         // return result; setter사용시 리턴
+
+
+
     }
 
 

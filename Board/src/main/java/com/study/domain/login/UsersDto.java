@@ -16,7 +16,10 @@ public class UsersDto {
     private String pw;  
     private String userName;
     private String createDate;
-
     private String loginDtm;
+
+    private String genderCode;
+    private String email;
+
 
 }

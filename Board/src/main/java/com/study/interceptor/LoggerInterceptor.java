@@ -20,13 +20,13 @@ public class LoggerInterceptor implements HandlerInterceptor{
         log.debug("Request URI ===> " + request.getRequestURI());
         log.debug("===========================================================");
 
-
         HttpSession session =  request.getSession();
         Object obj = session.getAttribute("login");
         //System.out.println(obj);
 
         if (obj == null) {
             // 로그인이 안되어 있는 상태임으로 로그인 폼으로 다시 돌려보냄(redirect)
+            System.out.println("리다이렉트로?????");
             response.sendRedirect("/login");
             return false; // 더이상 컨트롤러 요청으로 가지 않도록 false로 반환함
         }

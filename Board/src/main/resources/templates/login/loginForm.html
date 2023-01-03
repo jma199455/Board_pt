@@ -40,7 +40,7 @@
         </div>
         
         <button class="btn btn-lg btn-primary btn-block" type="submit">로그인</button>
-        <button class="btn btn-lg btn-block" type="button">회원가입</button>
+        <button class="btn btn-lg btn-block" type="button" onclick="move()">회원가입</button>
     </form>
 
     <!-- 여기서도 가능 script문  [추천]-->
@@ -64,7 +64,11 @@
 
                 // jquery추출 -> DOM객체 -> DOM객체로 .insertBefore 사용 $('div[class=form-label-group]')[0].insertBefore(inner_box, document.querySelector('#id')); 
                 */
-                
+        }
+
+
+        function move() {
+            location.href = '/signupForm';
         }
 
     </script>
